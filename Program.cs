@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using SupermarketWEB.Data;
+
 namespace SupermarketWEB
 {
     public class Program
@@ -9,15 +12,12 @@ namespace SupermarketWEB
             // Add services to the container.
             builder.Services.AddRazorPages();
 
-            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            builder.Services.AddDbContext<SupermarketContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("SupermarketDB")));
+
+           var app = builder.Build();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
