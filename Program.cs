@@ -15,7 +15,8 @@ namespace SupermarketWEB
 
             // Configure the HTTP request pipeline.
             builder.Services.AddDbContext<SupermarketContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("SupermarketDB")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("SupermarketDB"))
+            );
 
            var app = builder.Build();
 
@@ -29,6 +30,7 @@ namespace SupermarketWEB
             app.MapRazorPages();
 
             app.Run();
+
         }
     }
 }
