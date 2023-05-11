@@ -37,19 +37,19 @@ namespace SupermarketWEB.Migrations
                     b.ToTable("CategoryProduct");
                 });
 
-            modelBuilder.Entity("PayMentPayMode", b =>
+            modelBuilder.Entity("InvoicePayMode", b =>
                 {
-                    b.Property<int>("PayMentsId")
+                    b.Property<int>("InvoicesId")
                         .HasColumnType("int");
 
                     b.Property<int>("PayModesId")
                         .HasColumnType("int");
 
-                    b.HasKey("PayMentsId", "PayModesId");
+                    b.HasKey("InvoicesId", "PayModesId");
 
                     b.HasIndex("PayModesId");
 
-                    b.ToTable("PayMentPayMode");
+                    b.ToTable("InvoicePayMode");
                 });
 
             modelBuilder.Entity("SupermarketWEB.Models.Category", b =>
@@ -72,7 +72,7 @@ namespace SupermarketWEB.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("SupermarketWEB.Models.PayMent", b =>
+            modelBuilder.Entity("SupermarketWEB.Models.Invoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,18 +83,20 @@ namespace SupermarketWEB.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
                     b.Property<int>("PayModeId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProviderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Serial")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.ToTable("PayMent");
+                    b.HasIndex("ProviderId");
+
+                    b.ToTable("Invoice");
                 });
 
             modelBuilder.Entity("SupermarketWEB.Models.PayMode", b =>
@@ -143,6 +145,37 @@ namespace SupermarketWEB.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("SupermarketWEB.Models.Provider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Complete_Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Document")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Phone")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Providers");
+                });
+
             modelBuilder.Entity("CategoryProduct", b =>
                 {
                     b.HasOne("SupermarketWEB.Models.Category", null)
@@ -158,11 +191,11 @@ namespace SupermarketWEB.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PayMentPayMode", b =>
+            modelBuilder.Entity("InvoicePayMode", b =>
                 {
-                    b.HasOne("SupermarketWEB.Models.PayMent", null)
+                    b.HasOne("SupermarketWEB.Models.Invoice", null)
                         .WithMany()
-                        .HasForeignKey("PayMentsId")
+                        .HasForeignKey("InvoicesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -171,6 +204,20 @@ namespace SupermarketWEB.Migrations
                         .HasForeignKey("PayModesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SupermarketWEB.Models.Invoice", b =>
+                {
+                    b.HasOne("SupermarketWEB.Models.Provider", null)
+                        .WithMany("Invoices")
+                        .HasForeignKey("ProviderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SupermarketWEB.Models.Provider", b =>
+                {
+                    b.Navigation("Invoices");
                 });
 #pragma warning restore 612, 618
         }

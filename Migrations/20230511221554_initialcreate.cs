@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SupermarketWEB.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initialcreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,22 +23,6 @@ namespace SupermarketWEB.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PayMent",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Serial = table.Column<int>(type: "int", nullable: false),
-                    ProviderId = table.Column<int>(type: "int", nullable: false),
-                    PayModeId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PayMent", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,27 +56,20 @@ namespace SupermarketWEB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PayMentPayMode",
+                name: "Providers",
                 columns: table => new
                 {
-                    PayMentsId = table.Column<int>(type: "int", nullable: false),
-                    PayModesId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Document = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Complete_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Code = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PayMentPayMode", x => new { x.PayMentsId, x.PayModesId });
-                    table.ForeignKey(
-                        name: "FK_PayMentPayMode_PayMent_PayMentsId",
-                        column: x => x.PayMentsId,
-                        principalTable: "PayMent",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PayMentPayMode_PayModes_PayModesId",
-                        column: x => x.PayModesId,
-                        principalTable: "PayModes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Providers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,14 +96,65 @@ namespace SupermarketWEB.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Invoice",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    ProviderId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PayModeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invoice", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invoice_Providers_ProviderId",
+                        column: x => x.ProviderId,
+                        principalTable: "Providers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvoicePayMode",
+                columns: table => new
+                {
+                    InvoicesId = table.Column<int>(type: "int", nullable: false),
+                    PayModesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvoicePayMode", x => new { x.InvoicesId, x.PayModesId });
+                    table.ForeignKey(
+                        name: "FK_InvoicePayMode_Invoice_InvoicesId",
+                        column: x => x.InvoicesId,
+                        principalTable: "Invoice",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvoicePayMode_PayModes_PayModesId",
+                        column: x => x.PayModesId,
+                        principalTable: "PayModes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryProduct_ProductsId",
                 table: "CategoryProduct",
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PayMentPayMode_PayModesId",
-                table: "PayMentPayMode",
+                name: "IX_Invoice_ProviderId",
+                table: "Invoice",
+                column: "ProviderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoicePayMode_PayModesId",
+                table: "InvoicePayMode",
                 column: "PayModesId");
         }
 
@@ -137,7 +165,7 @@ namespace SupermarketWEB.Migrations
                 name: "CategoryProduct");
 
             migrationBuilder.DropTable(
-                name: "PayMentPayMode");
+                name: "InvoicePayMode");
 
             migrationBuilder.DropTable(
                 name: "Categories");
@@ -146,10 +174,13 @@ namespace SupermarketWEB.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "PayMent");
+                name: "Invoice");
 
             migrationBuilder.DropTable(
                 name: "PayModes");
+
+            migrationBuilder.DropTable(
+                name: "Providers");
         }
     }
 }

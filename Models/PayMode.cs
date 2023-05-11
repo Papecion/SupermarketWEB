@@ -6,6 +6,6 @@
         public string Name { get; set; }
         public string? Method { get; set; }
 
-        public ICollection<PayMent>? PayMents { get; set; } = default!;
+        public ICollection<Invoice>? Invoices { get; set; } = default!;
     }
 }
