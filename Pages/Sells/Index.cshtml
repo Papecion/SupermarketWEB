@@ -1,0 +1,41 @@
+﻿@page
+@model SupermarketWEB.Pages.Sells.IndexModel
+@{
+    ViewData["Title"] = "Index Sells";
+}
+
+<h1>Sells</h1>
+
+<form method="get">
+    <div class="form-group">
+        <input type="text" class="form-control" name="searchString" placeholder="Search product">
+    </div>
+    <h4>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </h4>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+           
+        <td>
+            <a asp-page="./Sell" asp-route-id="@product.Id" class="btn btn-warning">Sell</a>
+        </td>
+            </tr>
+        }
+    </tbody>
+</table>
