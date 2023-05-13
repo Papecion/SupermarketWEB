@@ -6,11 +6,11 @@ using SupermarketWEB.Models;
 
 namespace SupermarketWEB.Pages.Shoppings
 {
-    public class IndexModel : PageModel
+    public class BuyModel : PageModel
     {
         private readonly SupermarketContext _context;
 
-        public IndexModel(SupermarketContext context)
+        public BuyModel(SupermarketContext context)
         {
             _context = context;
         }
@@ -22,12 +22,12 @@ namespace SupermarketWEB.Pages.Shoppings
 
 
 
-            var products = from s in _context.Products
-                           select s;
+            var products = from p in _context.Products
+                           select p;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                products = products.Where(s => s.Name.Contains(searchString));
+                products = products.Where(p => p.Name.Contains(searchString));
             }
 
             Products = await products.ToListAsync();
