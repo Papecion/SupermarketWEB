@@ -19,7 +19,7 @@ namespace SupermarketWEB.Pages.Account
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, "Admin"),
+                    new Claim(ClaimTypes.Name,"/*****/"),
                     new Claim(ClaimTypes.Email, User.Email),
                 };
                 var identity = new ClaimsIdentity(claims, "MyCookieAuth");
