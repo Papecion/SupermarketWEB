@@ -10,5 +10,6 @@ namespace SupermarketWEB.Models
         [Required]
         [DataType (DataType.Password)]
         public string Password { get; set; }
+        ICollection<User> Users { get; set; }   
     }
 }
