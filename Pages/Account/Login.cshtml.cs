@@ -10,9 +10,7 @@ namespace SupermarketWEB.Pages.Account
     {
         [BindProperty]
         public User User { get; set; }
-        public void OnGet()
-        {
-        }
+      
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid) return Page();
